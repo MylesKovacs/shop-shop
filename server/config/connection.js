@@ -1,5 +1,5 @@
-const dbAtlas = config.get('MONGODB_URI')
 const config = require('config');
+const dbAtlas = config.get('MONGODB_URI')
 const mongoose = require('mongoose');
 
 mongoose.connect(dbAtlas || 'mongodb://localhost/mernshopping', {
