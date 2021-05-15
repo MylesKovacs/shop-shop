@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useQuery } from '@apollo/react-hooks';
-
+import { idbPromise } from "../../utils/helpers";
 import ProductItem from "../ProductItem";
 import { useStoreContext } from "../../utils/GlobalState";
 import { UPDATE_PRODUCTS } from "../../utils/actions";
@@ -20,8 +20,21 @@ function ProductList() {
            type: UPDATE_PRODUCTS,
           products: data.products
         });
+
+        data.products.forEach((product) => {
+          idbPromise('products', 'put', product);
+        });
+    } else if (!loading) {
+      //offline pulls from idb instead
+      idbPromise('products', 'get').then((products) => {
+        //this uses the data from ^ to set global state for offline browsing
+        dispatch({
+          type: UPDATE_PRODUCTS,
+          products: products
+        });
+      });
     }
-  }, [data, dispatch]);
+  }, [data, loading, dispatch]);
 
   function filterProducts() {
     if (!currentCategory) {
