@@ -1,11 +1,15 @@
 import React from 'react';
 import { idbPromise } from "../../utils/helpers";
-import { useStoreContext } from "../../utils/GlobalState";
+import { useSelector, useDispatch } from 'react-redux';
 import { REMOVE_FROM_CART, UPDATE_CART_QUANTITY } from "../../utils/actions";
 
 const CartItem = ({ item }) => {
 
-  const [, dispatch] = useStoreContext();
+  const state = useSelector((state) => {
+    return state;
+  })
+
+  const dispatch = useDispatch();
 
   const removeFromCart = item => {
     dispatch({
@@ -40,7 +44,7 @@ const CartItem = ({ item }) => {
       <div>
         <img
           src={`/images/${item.image}`}
-          alt=""
+          alt="Product"
         />
       </div>
       <div>
